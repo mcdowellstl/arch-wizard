@@ -1,0 +1,231 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-surface-0: #0d0f14;
+    --color-surface-1: #161922;
+    --color-surface-2: #1f2330;
+    --color-surface-3: #272c3d;
+    --color-accent: #f97316;
+    --color-accent-dim: #c2550f;
+    --color-accent-glow: rgba(249, 115, 22, 0.25);
+    --color-success: #22c55e;
+    --color-warning: #facc15;
+    --color-danger: #ef4444;
+    --color-text-primary: #f1f5f9;
+    --color-text-secondary: #94a3b8;
+    --color-text-muted: #475569;
+    --color-border: rgba(255, 255, 255, 0.08);
+    --radius-card: 16px;
+    --radius-btn: 12px;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-surface-0);
+    color: var(--color-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    overscroll-behavior: none;
+  }
+
+  /* Custom scrollbar for the app */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--color-surface-3); border-radius: 2px; }
+}
+
+@layer components {
+  .card {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: white;
+    font-weight: 700;
+    border-radius: var(--radius-btn);
+    padding: 14px 24px;
+    font-size: 15px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    box-shadow: 0 0 0 0 var(--color-accent-glow);
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover {
+    background: #fb923c;
+    box-shadow: 0 4px 20px var(--color-accent-glow);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(0px);
+    box-shadow: none;
+  }
+
+  .btn-secondary {
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    border-radius: var(--radius-btn);
+    padding: 14px 24px;
+    font-size: 15px;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .btn-secondary:hover {
+    background: var(--color-surface-3);
+    color: var(--color-text-primary);
+  }
+
+  .choice-btn {
+    background: var(--color-surface-2);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    width: 100%;
+    color: var(--color-text-primary);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .choice-btn:hover {
+    border-color: var(--color-accent);
+    background: rgba(249,115,22,0.08);
+    transform: translateX(3px);
+  }
+  .choice-btn:active { transform: translateX(0); }
+
+  .yes-btn {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1.5px solid rgba(34, 197, 94, 0.35);
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 17px;
+    border-radius: var(--radius-btn);
+    padding: 18px;
+    flex: 1;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .yes-btn:hover {
+    background: rgba(34, 197, 94, 0.22);
+    border-color: #22c55e;
+    transform: scale(1.02);
+  }
+
+  .no-btn {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1.5px solid rgba(239, 68, 68, 0.35);
+    color: #f87171;
+    font-weight: 700;
+    font-size: 17px;
+    border-radius: var(--radius-btn);
+    padding: 18px;
+    flex: 1;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .no-btn:hover {
+    background: rgba(239, 68, 68, 0.22);
+    border-color: #ef4444;
+    transform: scale(1.02);
+  }
+
+  .step-badge {
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .photo-drop {
+    border: 2px dashed rgba(249,115,22,0.4);
+    border-radius: var(--radius-card);
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: rgba(249,115,22,0.04);
+  }
+  .photo-drop:hover {
+    border-color: var(--color-accent);
+    background: rgba(249,115,22,0.09);
+  }
+
+  .text-input {
+    background: var(--color-surface-2);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-btn);
+    padding: 16px 18px;
+    width: 100%;
+    color: var(--color-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: 'Inter', monospace;
+  }
+  .text-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-glow);
+  }
+  .text-input::placeholder {
+    color: var(--color-text-muted);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.25s ease-out both;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-pulse-soft {
+    animation: pulseSoft 2.5s ease-in-out infinite;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+}

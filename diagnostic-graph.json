@@ -1,0 +1,535 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "categories": [
+    {
+      "id": "printer",
+      "label": "Printer",
+      "icon": "🖨️",
+      "entryNode": "printer_location"
+    },
+    {
+      "id": "pos",
+      "label": "Point of Sale",
+      "icon": "💳",
+      "entryNode": "pos_triage"
+    },
+    {
+      "id": "kds",
+      "label": "Kitchen Display",
+      "icon": "🖥️",
+      "entryNode": "kds_triage"
+    },
+    {
+      "id": "kiosk",
+      "label": "Kiosk",
+      "icon": "📲",
+      "entryNode": "kiosk_triage"
+    },
+    {
+      "id": "other",
+      "label": "Other",
+      "icon": "🔧",
+      "entryNode": "other_triage"
+    }
+  ],
+  "nodes": {
+    "printer_location": {
+      "id": "printer_location",
+      "type": "multiple_choice",
+      "title": "Where is the Printer Located?",
+      "subtitle": "Select the station the printer is attached to.",
+      "options": [
+        { "label": "POS",         "value": "pos",    "next": "printer_device_pos" },
+        { "label": "KVS",         "value": "kvs",    "next": "printer_device_kvs" },
+        { "label": "Kiosk",       "value": "kiosk",  "next": "printer_device_kiosk" },
+        { "label": "BOS (Office)","value": "bos",    "next": "printer_triage" },
+        { "label": "Other",       "value": "other",  "next": "printer_triage" }
+      ]
+    },
+    "printer_device_pos": {
+      "id": "printer_device_pos",
+      "type": "multiple_choice",
+      "title": "Which Device?",
+      "subtitle": "Select the POS terminal the printer is connected to.",
+      "options": [
+        { "label": "POS 1", "value": "pos1", "next": "printer_triage" },
+        { "label": "POS 2", "value": "pos2", "next": "printer_triage" },
+        { "label": "POS 3", "value": "pos3", "next": "printer_triage" }
+      ]
+    },
+    "printer_device_kvs": {
+      "id": "printer_device_kvs",
+      "type": "multiple_choice",
+      "title": "Which Device?",
+      "subtitle": "Select the KVS station the printer is connected to.",
+      "options": [
+        { "label": "KVS 1", "value": "kvs1", "next": "printer_triage" },
+        { "label": "KVS 2", "value": "kvs2", "next": "printer_triage" },
+        { "label": "KVS 3", "value": "kvs3", "next": "printer_triage" }
+      ]
+    },
+    "printer_device_kiosk": {
+      "id": "printer_device_kiosk",
+      "type": "multiple_choice",
+      "title": "Which Device?",
+      "subtitle": "Select the Kiosk the printer is connected to.",
+      "options": [
+        { "label": "Kiosk 1", "value": "kiosk1", "next": "printer_triage" },
+        { "label": "Kiosk 2", "value": "kiosk2", "next": "printer_triage" },
+        { "label": "Kiosk 3", "value": "kiosk3", "next": "printer_triage" }
+      ]
+    },
+    "printer_triage": {
+      "id": "printer_triage",
+      "type": "multiple_choice",
+      "title": "What is the issue?",
+      "subtitle": "Select the best description of the problem.",
+      "options": [
+        { "label": "Paper Jam",             "value": "paper_jam",  "next": "printer_paper_jam_check" },
+        { "label": "Not Printing at All",   "value": "no_print",   "next": "printer_power_check" },
+        { "label": "Printing Garbled Text", "value": "garbled",    "next": "printer_garbled_check" },
+        { "label": "Paper Out",             "value": "paper_out",  "next": "printer_paper_out_fix" },
+        { "label": "Error Light / Beeping", "value": "error_light","next": "printer_error_photo" }
+      ]
+    },
+    "printer_paper_jam_check": {
+      "id": "printer_paper_jam_check",
+      "type": "yes_no",
+      "title": "Is there visible paper stuck in the printer?",
+      "subtitle": "Open the printer cover and check for crumpled or jammed paper.",
+      "yes": "printer_paper_jam_fix",
+      "no": "printer_internal_jam_fix"
+    },
+    "printer_paper_jam_fix": {
+      "id": "printer_paper_jam_fix",
+      "type": "quick_fix",
+      "title": "Clear the Paper Jam",
+      "instructions": [
+        "Power off the printer using the power button.",
+        "Open all access panels and gently pull out jammed paper — always pull toward the paper exit, never backward.",
+        "Remove any torn scraps. Use tweezers if needed.",
+        "Reload the paper roll so the paper feeds from the bottom.",
+        "Close all panels, then power the printer back on.",
+        "Print a test page using the button on the back of the unit."
+      ],
+      "resolvedPrompt": "Did this resolve the issue?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "printer_info_collection"
+    },
+    "printer_internal_jam_fix": {
+      "id": "printer_internal_jam_fix",
+      "type": "quick_fix",
+      "title": "Internal Jam — Roller Check",
+      "instructions": [
+        "Power off the printer.",
+        "Use a flashlight to inspect the paper path — look for small torn bits of paper.",
+        "Use tweezers to remove any fragments found.",
+        "Clean the paper sensor (small clear tab near the roller) with a dry cotton swab.",
+        "Reload paper and power on. Try a test print."
+      ],
+      "resolvedPrompt": "Did this resolve the issue?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "printer_info_collection"
+    },
+    "printer_power_check": {
+      "id": "printer_power_check",
+      "type": "yes_no",
+      "title": "Are the power and status lights on?",
+      "subtitle": "Check that the green or blue power indicator is lit.",
+      "yes": "printer_cable_check",
+      "no": "printer_power_fix"
+    },
+    "printer_power_fix": {
+      "id": "printer_power_fix",
+      "type": "quick_fix",
+      "title": "Restore Printer Power",
+      "instructions": [
+        "Check that the power cable is fully seated in both the printer and the wall outlet.",
+        "Try a different outlet to rule out a dead circuit.",
+        "Hold the power button for 5 seconds to force a reset.",
+        "If using a power strip, bypass it and plug directly into the wall."
+      ],
+      "resolvedPrompt": "Are the lights on now?",
+      "resolvedYes": "printer_cable_check",
+      "resolvedNo": "printer_info_collection"
+    },
+    "printer_cable_check": {
+      "id": "printer_cable_check",
+      "type": "yes_no",
+      "title": "Is the USB or Ethernet cable firmly connected?",
+      "subtitle": "Trace the cable from the printer to the POS terminal or router.",
+      "yes": "printer_driver_restart_fix",
+      "no": "printer_reconnect_fix"
+    },
+    "printer_reconnect_fix": {
+      "id": "printer_reconnect_fix",
+      "type": "quick_fix",
+      "title": "Re-seat the Cable",
+      "instructions": [
+        "Unplug the data cable from both ends.",
+        "Inspect the connector for bent pins or debris.",
+        "Firmly re-seat the cable at both ends until you hear/feel a click.",
+        "Attempt a test print from the POS."
+      ],
+      "resolvedPrompt": "Is the printer printing now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "printer_driver_restart_fix"
+    },
+    "printer_driver_restart_fix": {
+      "id": "printer_driver_restart_fix",
+      "type": "quick_fix",
+      "title": "Restart the Print Service",
+      "instructions": [
+        "On the POS terminal, close the restaurant software.",
+        "Reboot the POS terminal completely.",
+        "Power-cycle the printer: off for 10 seconds, then on.",
+        "Re-open the restaurant software and try a test print."
+      ],
+      "resolvedPrompt": "Is the printer printing now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "printer_error_photo"
+    },
+    "printer_garbled_check": {
+      "id": "printer_garbled_check",
+      "type": "yes_no",
+      "title": "Did the issue start after a software update?",
+      "subtitle": "Check with your manager if any updates were applied today.",
+      "yes": "printer_garbled_update_fix",
+      "no": "printer_garbled_cable_fix"
+    },
+    "printer_garbled_update_fix": {
+      "id": "printer_garbled_update_fix",
+      "type": "quick_fix",
+      "title": "Driver Mismatch After Update",
+      "instructions": [
+        "Reboot the POS terminal.",
+        "Open Settings → Printers and confirm the correct driver is selected for your model.",
+        "If the driver changed, select the previous driver or re-install from the USB stick in the manager's office.",
+        "Run a test print."
+      ],
+      "resolvedPrompt": "Is the output readable now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "printer_info_collection"
+    },
+    "printer_garbled_cable_fix": {
+      "id": "printer_garbled_cable_fix",
+      "type": "quick_fix",
+      "title": "Data Corruption — Cable or Port",
+      "instructions": [
+        "Replace the USB cable with the spare from the supply cabinet.",
+        "Try a different USB port on the POS terminal.",
+        "Power-cycle both the printer and the POS.",
+        "Run a test print."
+      ],
+      "resolvedPrompt": "Is the output readable now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "printer_info_collection"
+    },
+    "printer_paper_out_fix": {
+      "id": "printer_paper_out_fix",
+      "type": "quick_fix",
+      "title": "Reload Paper Roll",
+      "instructions": [
+        "Open the printer lid.",
+        "Remove the empty core from the spindle.",
+        "Place a new 80mm thermal roll with paper feeding from the bottom of the roll.",
+        "Leave about 2 inches of paper hanging out, then close the lid firmly.",
+        "The printer will auto-calibrate and be ready to print."
+      ],
+      "resolvedPrompt": "Is the printer printing now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "printer_info_collection"
+    },
+    "printer_error_photo": {
+      "id": "printer_error_photo",
+      "type": "photo_upload",
+      "title": "Photograph the Error",
+      "prompt": "Take a clear photo of the printer's display panel or error lights. This will be included in your support ticket.",
+      "fieldKey": "error_photo",
+      "next": "printer_info_collection"
+    },
+    "printer_info_collection": {
+      "id": "printer_info_collection",
+      "type": "multi_field_optional",
+      "title": "Device Information",
+      "subtitle": "All fields are optional — complete what you can.",
+      "hint": "Completing these steps will lead to quicker resolution.",
+      "fields": [
+        {
+          "type": "text",
+          "label": "Model # of the Printer",
+          "prompt": "Enter the Model # of the Printer:",
+          "placeholder": "e.g., Epson TM-T88VI",
+          "fieldKey": "printer_model"
+        },
+        {
+          "type": "text",
+          "label": "Serial # of the Printer",
+          "prompt": "Enter the Serial # of the Printer:",
+          "placeholder": "e.g., SN123456789",
+          "fieldKey": "serial_number"
+        }
+      ],
+      "next": "otp_certification_check"
+    },
+    "otp_certification_check": {
+      "id": "otp_certification_check",
+      "type": "yes_no",
+      "title": "Are you OTP3 or OTP4 certified?",
+      "yes": "hardware_replacement_check",
+      "no": "terminal_submit_ticket"
+    },
+    "hardware_replacement_check": {
+      "id": "hardware_replacement_check",
+      "type": "yes_no",
+      "title": "Does this issue require a hardware replacement service order to be dispatched?",
+      "yes": "terminal_submit_ticket",
+      "no": "terminal_submit_ticket"
+    },
+    "terminal_resolved": {
+      "id": "terminal_resolved",
+      "type": "terminal_resolved",
+      "title": "Issue Resolved! ✅",
+      "message": "Great work. The issue has been resolved. No ticket is needed.",
+      "action": "resolved"
+    },
+    "terminal_submit_ticket": {
+      "id": "terminal_submit_ticket",
+      "type": "terminal_submit_ticket",
+      "title": "Submitting Support Ticket",
+      "message": "We were unable to resolve the issue on-site. Your session data has been packaged and sent to the support team. Expected response time: under 4 hours.",
+      "action": "submit_ticket",
+      "ticketFields": ["category", "serial_number", "error_photo", "breadcrumbs"]
+    },
+    "pos_triage": {
+      "id": "pos_triage",
+      "type": "multiple_choice",
+      "title": "What is the POS doing?",
+      "subtitle": "Select the best description of the issue.",
+      "options": [
+        { "label": "Screen is Black / Frozen", "value": "frozen", "next": "pos_reboot_fix" },
+        { "label": "Credit Card Reader Failing", "value": "card_reader", "next": "pos_card_check" },
+        { "label": "Slow / Lagging", "value": "slow", "next": "pos_slow_fix" },
+        { "label": "Software Crash / Error Message", "value": "crash", "next": "pos_serial_number" }
+      ]
+    },
+    "pos_reboot_fix": {
+      "id": "pos_reboot_fix",
+      "type": "quick_fix",
+      "title": "Reboot the POS Terminal",
+      "instructions": [
+        "Hold the power button for 10 seconds until the screen goes dark.",
+        "Wait 30 seconds.",
+        "Press the power button once to restart.",
+        "Wait for the POS software to fully load (up to 2 minutes)."
+      ],
+      "resolvedPrompt": "Is the POS responsive now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "pos_serial_number"
+    },
+    "pos_card_check": {
+      "id": "pos_card_check",
+      "type": "yes_no",
+      "title": "Is the card reader cable seated correctly?",
+      "subtitle": "Trace the cable from the card swipe to the back of the POS.",
+      "yes": "pos_card_clean_fix",
+      "no": "pos_card_reseat_fix"
+    },
+    "pos_card_clean_fix": {
+      "id": "pos_card_clean_fix",
+      "type": "quick_fix",
+      "title": "Clean the Card Reader",
+      "instructions": [
+        "Use a dry microfiber cloth to wipe the card slot opening.",
+        "Insert and remove a cleaning card 3 times (spare in manager's drawer).",
+        "Retry a card transaction."
+      ],
+      "resolvedPrompt": "Is the card reader working now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "pos_serial_number"
+    },
+    "pos_card_reseat_fix": {
+      "id": "pos_card_reseat_fix",
+      "type": "quick_fix",
+      "title": "Re-seat Card Reader Cable",
+      "instructions": [
+        "Power off the POS terminal.",
+        "Unplug and re-seat the USB or serial cable from the card reader.",
+        "Power the terminal back on and retry."
+      ],
+      "resolvedPrompt": "Is the card reader working now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "pos_serial_number"
+    },
+    "pos_slow_fix": {
+      "id": "pos_slow_fix",
+      "type": "quick_fix",
+      "title": "Speed Up the POS",
+      "instructions": [
+        "Close any browser windows or extra applications running in the background.",
+        "Reboot the terminal.",
+        "Ensure the Wi-Fi signal indicator shows 3+ bars, or switch to wired Ethernet.",
+        "If on Wi-Fi, move the router/access point closer or remove obstructions."
+      ],
+      "resolvedPrompt": "Is performance acceptable now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "pos_serial_number"
+    },
+    "pos_serial_number": {
+      "id": "pos_serial_number",
+      "type": "text_input",
+      "title": "Enter the POS Terminal Serial Number",
+      "prompt": "Found on the label on the back or bottom of the terminal.",
+      "placeholder": "e.g., POS-987654321",
+      "fieldKey": "serial_number",
+      "validation": { "minLength": 6, "maxLength": 20 },
+      "next": "otp_certification_check"
+    },
+    "kds_triage": {
+      "id": "kds_triage",
+      "type": "multiple_choice",
+      "title": "What is the Kitchen Display doing?",
+      "subtitle": "Select the best description of the issue.",
+      "options": [
+        { "label": "Screen is Blank", "value": "blank", "next": "kds_power_fix" },
+        { "label": "Orders Not Appearing", "value": "no_orders", "next": "kds_network_fix" },
+        { "label": "Touchscreen Not Responding", "value": "touch", "next": "kds_touch_fix" }
+      ]
+    },
+    "kds_power_fix": {
+      "id": "kds_power_fix",
+      "type": "quick_fix",
+      "title": "Restore KDS Display",
+      "instructions": [
+        "Check the power cable and display cable at the back of the unit.",
+        "Press the menu button on the back and confirm Brightness is not set to 0.",
+        "Power-cycle the KDS unit."
+      ],
+      "resolvedPrompt": "Is the screen showing content now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "kds_serial_number"
+    },
+    "kds_network_fix": {
+      "id": "kds_network_fix",
+      "type": "quick_fix",
+      "title": "Reconnect KDS to Network",
+      "instructions": [
+        "Check the Ethernet cable between the KDS and the network switch.",
+        "Reboot the network switch by unplugging for 30 seconds.",
+        "Reboot the KDS unit.",
+        "Confirm orders are routing correctly from the POS."
+      ],
+      "resolvedPrompt": "Are orders appearing now?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "kds_serial_number"
+    },
+    "kds_touch_fix": {
+      "id": "kds_touch_fix",
+      "type": "quick_fix",
+      "title": "Restore Touchscreen Response",
+      "instructions": [
+        "Clean the screen with a dry microfiber cloth.",
+        "Ensure no water or grease is coating the screen.",
+        "Reboot the KDS unit.",
+        "Test touch response on the home screen."
+      ],
+      "resolvedPrompt": "Is the touchscreen responding?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "kds_serial_number"
+    },
+    "kds_serial_number": {
+      "id": "kds_serial_number",
+      "type": "text_input",
+      "title": "Enter the KDS Serial Number",
+      "prompt": "Found on the label on the back of the display unit.",
+      "placeholder": "e.g., KDS-112233",
+      "fieldKey": "serial_number",
+      "validation": { "minLength": 6, "maxLength": 20 },
+      "next": "otp_certification_check"
+    },
+    "kiosk_triage": {
+      "id": "kiosk_triage",
+      "type": "multiple_choice",
+      "title": "What is the Kiosk doing?",
+      "subtitle": "Select the best description of the issue.",
+      "options": [
+        { "label": "Screen Frozen / Black", "value": "frozen", "next": "kiosk_reboot_fix" },
+        { "label": "Payment Terminal Error", "value": "payment", "next": "kiosk_serial_number" },
+        { "label": "Printer Not Printing Receipt", "value": "receipt", "next": "printer_paper_out_fix" }
+      ]
+    },
+    "kiosk_reboot_fix": {
+      "id": "kiosk_reboot_fix",
+      "type": "quick_fix",
+      "title": "Reboot the Kiosk",
+      "instructions": [
+        "Locate the power button on the back panel of the kiosk cabinet.",
+        "Hold for 10 seconds to force shutdown.",
+        "Wait 30 seconds, then press once to restart.",
+        "Wait for the welcome screen to appear (up to 3 minutes)."
+      ],
+      "resolvedPrompt": "Is the kiosk showing the welcome screen?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "kiosk_serial_number"
+    },
+    "kiosk_serial_number": {
+      "id": "kiosk_serial_number",
+      "type": "text_input",
+      "title": "Enter the Kiosk Serial Number",
+      "prompt": "Found on the asset tag inside the kiosk cabinet door.",
+      "placeholder": "e.g., KSK-998877",
+      "fieldKey": "serial_number",
+      "validation": { "minLength": 6, "maxLength": 20 },
+      "next": "otp_certification_check"
+    },
+    "other_triage": {
+      "id": "other_triage",
+      "type": "multiple_choice",
+      "title": "What type of equipment needs support?",
+      "subtitle": "Choose the closest match.",
+      "options": [
+        { "label": "Network / Wi-Fi", "value": "network", "next": "other_network_fix" },
+        { "label": "Cash Drawer", "value": "cash_drawer", "next": "other_cash_fix" },
+        { "label": "Something Else", "value": "other", "next": "other_serial_number" }
+      ]
+    },
+    "other_network_fix": {
+      "id": "other_network_fix",
+      "type": "quick_fix",
+      "title": "Network / Wi-Fi Reset",
+      "instructions": [
+        "Locate the router or access point (usually mounted near the manager's office or above the POS area).",
+        "Unplug the power cable from the router for 60 seconds.",
+        "Plug it back in and wait 2 minutes for it to fully reconnect.",
+        "Test connectivity on the POS terminal."
+      ],
+      "resolvedPrompt": "Is connectivity restored?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "other_serial_number"
+    },
+    "other_cash_fix": {
+      "id": "other_cash_fix",
+      "type": "quick_fix",
+      "title": "Cash Drawer Not Opening",
+      "instructions": [
+        "Verify the RJ-11 cable between the cash drawer and the receipt printer is connected.",
+        "In the POS software, trigger an 'Open Cash Drawer' command from the admin menu.",
+        "If the drawer still won't open, use the emergency key on the bottom of the drawer."
+      ],
+      "resolvedPrompt": "Is the cash drawer opening?",
+      "resolvedYes": "terminal_resolved",
+      "resolvedNo": "other_serial_number"
+    },
+    "other_serial_number": {
+      "id": "other_serial_number",
+      "type": "text_input",
+      "title": "Enter Equipment Serial or Asset Number",
+      "prompt": "Found on the asset tag or label on the equipment.",
+      "placeholder": "e.g., ASSET-001",
+      "fieldKey": "serial_number",
+      "validation": { "minLength": 3, "maxLength": 30 },
+      "next": "otp_certification_check"
+    }
+  }
+}
